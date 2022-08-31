@@ -117,6 +117,21 @@ class LoopBuffer
         return a;
     }
 
+    /** returns the next sample of type T in the buffer, interpolated if necessary, and increments position of read pointer .
+     *  but does not loop back once complete
+    */
+    inline const T ReadOnce() //const
+    {
+        T a = 0;
+
+        if (read_ptr_ < length_) {
+            a = line_[(read_ptr_) % length_];
+        }
+        read_ptr_ = read_ptr_ < (length_ - 1) ? read_ptr_ + 1 : read_ptr_;
+
+        return a;
+    }
+
     /** returns the next sample of type T in the buffer, with a defined clip length
     */
     inline const T Read(float clipEnd, size_t minClip) //const
